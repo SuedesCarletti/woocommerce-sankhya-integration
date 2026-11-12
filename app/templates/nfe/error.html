@@ -1,0 +1,135 @@
+<!-- app/templates/nfe/error.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro ao Carregar NFe</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .card {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #DC2626;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            color: #6B7280;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .error-details {
+            background: #FEF2F2;
+            border-left: 4px solid #DC2626;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            margin: 20px 0;
+        }
+        
+        .error-details code {
+            color: #991B1B;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #F05A01;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(240, 90, 1, 0.3);
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            background: #D04F01;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 90, 1, 0.4);
+        }
+        
+        .support-info {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #E5E7EB;
+            font-size: 14px;
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="icon">⚠️</div>
+            <h1>Erro ao Carregar NFe</h1>
+            <p>Ocorreu um erro ao tentar carregar a Nota Fiscal Eletrônica.</p>
+            
+            {% if error %}
+            <div class="error-details">
+                <strong>Detalhes do erro:</strong><br>
+                <code>{{ error }}</code>
+            </div>
+            {% endif %}
+            
+            {% if order_id %}
+            <p style="font-size: 14px; color: #9CA3AF;">
+                Pedido: <strong>#{{ order_id }}</strong>
+            </p>
+            {% endif %}
+            
+            <a href="javascript:history.back()" class="btn">
+                ← Tentar Novamente
+            </a>
+            
+            <div class="support-info">
+                <p>
+                    Se o problema persistir, entre em contato com nosso suporte<br>
+                    informando o número do pedido e a mensagem de erro acima.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
