@@ -46,10 +46,10 @@ class WebhookSecurity:
             self.logger.warning("Token não fornecido")
             return False
         
-        if token in self.valid_tokens:
+        if any(hmac.compare_digest(str(token), str(t)) for t in self.valid_tokens if t):
             return True
         
-        self.logger.warning(f"Token inválido fornecido: {token[:8]}...")
+        self.logger.warning(f"Token inválido fornecido")
         return False
     
     def validar_assinatura(self, payload, signature, secret=None):
@@ -84,17 +84,13 @@ class WebhookSecurity:
             if signature.startswith('sha256='):
                 clean_signature = signature[7:]
             
-            # DEBUG: Log dos valores para comparação (apenas primeiros caracteres)
-            self.logger.debug(f"Expected: {expected_b64[:20]}...")
-            self.logger.debug(f"Received: {clean_signature[:20]}...")
-            
             # Comparação segura
             is_valid = hmac.compare_digest(expected_b64, clean_signature)
             
             if not is_valid:
-                self.logger.warning(f"Assinatura HMAC inválida. Expected: {expected_b64[:10]}..., Got: {clean_signature[:10]}...")
+                self.logger.warning("Assinatura HMAC inválida")
                 # CORREÇÃO: Log mais detalhado para debug
-                self.logger.debug(f"Secret usado: {secret[:10]}...")
+                self.logger.debug(f"Secret configurado para validação")
                 self.logger.debug(f"Payload size: {len(payload)} bytes")
             else:
                 self.logger.info("Assinatura HMAC válida")

@@ -250,7 +250,7 @@ class SankhyaService:
 
                     if xml_content and len(xml_content) > 100:
                         logger.info(
-                            f"✅ [XML NFe] XML obtido via SQL da TGFNFE "
+                            f"[XML NFe] XML obtido via SQL da TGFNFE "
                             f"para NUNOTA {nunota} — {len(xml_content)} chars"
                         )
                         return xml_content.strip()
@@ -281,7 +281,7 @@ class SankhyaService:
                     xml_content = entity.get("f0", {}).get("$", "")
                     if xml_content and len(xml_content) > 100:
                         logger.info(
-                            f"✅ [XML NFe] XML obtido via ArquivoNfe "
+                            f"[XML NFe] XML obtido via ArquivoNfe "
                             f"para NUNOTA {nunota} — {len(xml_content)} chars"
                         )
                         return xml_content.strip()
@@ -523,7 +523,7 @@ class SankhyaService:
             # PROCESSAMENTO 3: Montar estrutura do pedido
             dtneg = datetime.now().strftime('%Y-%m-%d')
 
-            # --- START NOVO: FREIGHT RATING E ALOCAÇÃO ---
+            # --- START: FREIGHT RATING E ALOCAÇÃO ---
             
             # 1. Mapeia CODLOCAL do plugin e Frete total por grupo
             frete_por_codlocal = self._mapear_frete_por_codlocal(payload)
@@ -573,7 +573,7 @@ class SankhyaService:
                         item['codlocalorig'] = codlocal
                         itens_com_frete_rateado.append(item)
             
-            # --- END NOVO: FREIGHT RATING E ALOCAÇÃO ---
+            # --- END: FREIGHT RATING E ALOCAÇÃO ---
             
             # Montar itens do pedido USANDO itens_com_frete_rateado (Garantindo itens limpos)
             itens_pedido = []
@@ -639,7 +639,7 @@ class SankhyaService:
                     "pedido_id": pedido_id
                 }
             
-            # NOVO: Verificar se foram criados múltiplos pedidos
+  # Verificar se foram criados múltiplos pedidos
             if resultado_pedido.get('multiplos_pedidos', False):
                 nunotas_lista = resultado_pedido.get('nunotas', [])
                 print(f"[SANKHYA SERVICE] Múltiplos pedidos criados: {len(nunotas_lista)}")
@@ -797,7 +797,7 @@ class SankhyaService:
                         if not codprod:
                              raise ValueError("CODPROD Sankhya não encontrado após mapeamento.")
 
-                        # Obtém CODLOCALORIG dinâmico
+                        # Obtém CODLOCALORIG dinmico
                         codlocalorig = self.pedidos.obter_codlocalorig_dinamico(codprod)
                         if not codlocalorig:
                             codlocalorig = '1001' # Fallback padrão
@@ -1312,7 +1312,7 @@ class SankhyaService:
 
     def _salvar_multiplos_nunotas_woocommerce(self, pedido_id, nunotas_lista):
         """
-        ✅ NOVO: Salva múltiplos NUNOTAs no WooCommerce
+        Salva múltiplos NUNOTAs no WooCommerce
         """
         try:
             from services.woocommerce.service import WooCommerceService
@@ -1400,7 +1400,7 @@ class SankhyaServiceContext:
         Entra no contexto: autentica e cria serviço
         
         Returns:
-            Instância de SankhyaService autenticada
+            Instncia de SankhyaService autenticada
         """
         try:
             print(f"[SANKHYA SERVICE CONTEXT] Iniciando autenticação...")
@@ -1414,7 +1414,7 @@ class SankhyaServiceContext:
             
             print(f"[SANKHYA SERVICE CONTEXT] Autenticação realizada com sucesso")
             
-            # Cria instância do serviço com token
+            # Cria instncia do serviço com token
             self.service = SankhyaService(self.token)
             
             print(f"[SANKHYA SERVICE CONTEXT] Serviços Sankhya inicializados")
@@ -1835,7 +1835,7 @@ class SankhyaServiceLogger:
         # Print também
         emoji_map = {
             'INFO': 'ℹ️',
-            'SUCCESS': '✅',
+            'SUCCESS': '',
             'WARNING': '',
             'ERROR': '❌',
             'DEBUG': '🔍'

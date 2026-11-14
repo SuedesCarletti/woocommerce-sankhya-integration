@@ -14,7 +14,7 @@ class ProdutosService(SankhyaClient):
     
     def mapear_produto(self, produto_wc):
             """
-            ✅ CORRIGIDO: Mapeia produto do WooCommerce para o Sankhya usando múltiplas estratégias
+            CORRIGIDO: Mapeia produto do WooCommerce para o Sankhya usando múltiplas estratégias
             CORREÇÃO: Retorno padronizado compatível com SankhyaService
             """
             if not produto_wc:
@@ -110,7 +110,7 @@ class ProdutosService(SankhyaClient):
     
     def _preparar_estrategias_busca(self, sku, product_id, variation_id):
         """
-        ✅ CORRIGIDO: Normaliza SKU para remover sufixos e busca por CODPROD
+        CORRIGIDO: Normaliza SKU para remover sufixos e busca por CODPROD
         """
         estrategias = []
 
@@ -138,7 +138,7 @@ class ProdutosService(SankhyaClient):
 
     def _normalizar_sku_simples(self, sku):
         """
-        ✅ NOVA FUNÇÃO: Normalização simples para remover sufixos comuns
+        NOVA FUNÇÃO: Normalização simples para remover sufixos comuns
         """
         if not sku:
             return None

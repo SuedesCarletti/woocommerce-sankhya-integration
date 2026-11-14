@@ -35,7 +35,7 @@ class WooCommerceMapper:
         
         documento_limpo = limpar_documento(documento) if documento else ""
         
-        # CÓDIGO IBGE (NOVO)
+        # CÓDIGO IBGE
         ibge_code = ''
         for meta in data_woo.get('meta_data', []):
             key = meta.get('key', '')
@@ -60,7 +60,7 @@ class WooCommerceMapper:
             'estado': billing.get('state', ''),
             'cep': billing.get('postcode', ''),
             'pais': billing.get('country', 'BR'),
-            'ibge_code': ibge_code  # NOVO
+            'ibge_code': ibge_code
         }
         
         return {

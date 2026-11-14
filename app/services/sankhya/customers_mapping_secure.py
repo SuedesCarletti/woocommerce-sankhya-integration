@@ -11,7 +11,7 @@ from .base import SankhyaClient
 
 class CustomerMappingService(SankhyaClient):
     """
-    ✅ CORRIGIDO: Herda de SankhyaClient e integra com arquitetura existente
+    CORRIGIDO: Herda de SankhyaClient e integra com arquitetura existente
     """
     
     def __init__(self, token=None, parceiros_service=None):
@@ -122,7 +122,7 @@ class CustomerMappingService(SankhyaClient):
     def _extrair_3_palavras_principais(self, texto: str) -> List[str]:
             """
             💡 MELHORIA: Extrai até 3 palavras mais significativas, ignorando stop words.
-            ✅ CORREÇÃO: "Jardim" foi removido das stop words para nomes de bairro.
+            CORREÇÃO: "Jardim" foi removido das stop words para nomes de bairro.
             """
             if not texto:
                 return []
@@ -146,7 +146,7 @@ class CustomerMappingService(SankhyaClient):
     
     def _mapear_endereco_3_palavras(self, endereco: str) -> Dict:
         """
-        ✅ FOCO: Buscar CODEND existente no Sankhya para reutilizar com lógica aprimorada.
+        FOCO: Buscar CODEND existente no Sankhya para reutilizar com lógica aprimorada.
         """
         if not endereco:
             return {'sucesso': False, 'erro': 'Endereço não informado'}
@@ -174,7 +174,7 @@ class CustomerMappingService(SankhyaClient):
 
     def _buscar_endereco_por_palavras(self, palavras: List[str]) -> Dict:
         """
-        ✅ BUSCA MELHORADA: Tenta encontrar endereços com base em palavras significativas.
+        BUSCA MELHORADA: Tenta encontrar endereços com base em palavras significativas.
         """
         if not palavras:
             return {'sucesso': False, 'erro': 'Nenhuma palavra fornecida'}
@@ -217,7 +217,7 @@ class CustomerMappingService(SankhyaClient):
 
     def _criar_endereco_novo(self, endereco: str, palavras_chave: List[str]) -> Dict:
         """
-        ✅ ÚLTIMO RECURSO: Só cria se realmente não existir (com validação de duplicata)
+        ÚLTIMO RECURSO: Só cria se realmente não existir (com validação de duplicata)
         """
         try:
             nome_logradouro = self._extrair_nome_logradouro(endereco)
@@ -282,7 +282,7 @@ class CustomerMappingService(SankhyaClient):
 
     def _mapear_bairro_3_palavras(self, bairro: str) -> Dict:
         """
-        ✅ FOCO: Buscar CODBAI existente no Sankhya para reutilizar com lógica aprimorada.
+        FOCO: Buscar CODBAI existente no Sankhya para reutilizar com lógica aprimorada.
         """
         if not bairro:
             return {'sucesso': False, 'erro': 'Bairro não informado'}
@@ -311,7 +311,7 @@ class CustomerMappingService(SankhyaClient):
 
     def _buscar_bairro_por_palavras(self, palavras: List[str]) -> Dict:
         """
-        ✅ BUSCA MELHORADA: Tenta encontrar bairros com base em palavras significativas.
+        BUSCA MELHORADA: Tenta encontrar bairros com base em palavras significativas.
         """
         if not palavras:
             return {'sucesso': False, 'erro': 'Nenhuma palavra fornecida'}
@@ -351,7 +351,7 @@ class CustomerMappingService(SankhyaClient):
 
     def _criar_bairro_novo(self, bairro: str) -> Dict:
         """
-        ✅ ÚLTIMO RECURSO: Só cria se realmente não existir.
+        ÚLTIMO RECURSO: Só cria se realmente não existir.
         """
         try:
             nome_bairro = bairro.strip().upper()

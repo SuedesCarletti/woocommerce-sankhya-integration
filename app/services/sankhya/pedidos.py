@@ -13,7 +13,7 @@ from config.settings import get_sankhya_defaults
 class PedidosService(SankhyaClient):
     """
     Serviço para gestão de pedidos/notas no Sankhya
-    ✅ CORRIGIDO: Remove referências a self.session, adiciona campos obrigatórios
+    CORRIGIDO: Remove referências a self.session, adiciona campos obrigatórios
     """
     
     def __init__(self, token=None):
@@ -31,13 +31,13 @@ class PedidosService(SankhyaClient):
     def incluir(self, codparc, dtneg, itens, **kwargs):
         """
         Inclui um novo pedido no Sankhya
-        ✅ ATUALIZADO: Detecta itens de estoques diferentes e cria múltiplos pedidos
+        ATUALIZADO: Detecta itens de estoques diferentes e cria múltiplos pedidos
         
         Args:
             codparc: Código do parceiro
             dtneg: Data de negociação (formato DD/MM/YYYY)
             itens: Lista de itens do pedido
-            **kwargs: Parâmetros opcionais do pedido
+            **kwargs: Parmetros opcionais do pedido
             
         Returns:
             dict: Resultado da operação com lista de NUNOTAs criados
@@ -62,18 +62,18 @@ class PedidosService(SankhyaClient):
                 if len(parts) == 3:
                     dtneg = f"{parts[2]}/{parts[1]}/{parts[0]}"
     
-            # NOVO: Separar itens por estoque
+  # Separar itens por estoque
             itens_por_estoque = self._separar_itens_por_estoque(itens)
             
             if len(itens_por_estoque) == 0:
                 raise ValueError("Nenhum item válido para processamento")
             
-            # NOVO: Se há apenas um estoque, processa normalmente
+  # Se há apenas um estoque, processa normalmente
             if len(itens_por_estoque) == 1:
                 print(f"[PEDIDOS] ℹTodos os itens são do mesmo estoque")
                 return self._incluir_pedido_unico(codparc, dtneg, itens, **kwargs)
             
-            # NOVO: Se há múltiplos estoques, criar múltiplos pedidos
+  # Se há múltiplos estoques, criar múltiplos pedidos
             print(f"[PEDIDOS] Detectados {len(itens_por_estoque)} estoques diferentes")
             print(f"[PEDIDOS] Estoques: {list(itens_por_estoque.keys())}")
             print(f"[PEDIDOS] Criando pedidos separados para cada estoque...")
@@ -97,7 +97,7 @@ class PedidosService(SankhyaClient):
             dados_cliente = kwargs.get('dados_cliente', {})
             codlocalorig = itens[0].get('codlocalorig', '401') if itens else '401'
             
-            # NOVO: Determinar CODTIPOPER baseado no cliente e estoque
+  # Determinar CODTIPOPER baseado no cliente e estoque
             codtipoper = self._determinar_codtipoper(dados_cliente, codlocalorig)
             kwargs['codtipoper'] = codtipoper
             
@@ -168,7 +168,7 @@ class PedidosService(SankhyaClient):
             
     def _separar_itens_por_estoque(self, itens):
         """
-        ✅ NOVO: Separa itens por estoque (401, 201, etc)
+        Separa itens por estoque (401, 201, etc)
         
         Args:
             itens: Lista de itens do pedido
@@ -196,7 +196,7 @@ class PedidosService(SankhyaClient):
     
     def _incluir_pedidos_multiplos(self, codparc, dtneg, itens_por_estoque, **kwargs):
         """
-        ✅ CORREÇÃO: Inclui múltiplos pedidos, definindo o frete específico no cabeçalho
+        CORREÇÃO: Inclui múltiplos pedidos, definindo o frete específico no cabeçalho
         e garantindo que o vlr_frete_rateado (se passado em kwargs) seja honrado nos itens.
         """
         try:
@@ -205,7 +205,7 @@ class PedidosService(SankhyaClient):
                 print("[PEDIDOS] Payload WooCommerce bruto ausente para mapear frete. Usando frete total/zero.")
                 return self._incluir_pedido_unico(codparc, dtneg, kwargs.get('itens', []), **kwargs)
                 
-            # NOVO PASSO: Mapear o frete por estoque
+            # Passo: Mapear o frete por estoque
             frete_por_estoque = self._mapear_frete_por_estoque_msc(raw_woo_payload)
 
             resultados = []
@@ -289,7 +289,7 @@ class PedidosService(SankhyaClient):
     
     def _determinar_codtipoper(self, dados_cliente, codlocalorig):
         """
-        ✅ NOVO: Determina CODTIPOPER baseado em cliente e estoque
+        Determina CODTIPOPER baseado em cliente e estoque
         
         Regras:
         - Não contribuinte + 401 = 304
@@ -326,7 +326,7 @@ class PedidosService(SankhyaClient):
     
     def _verificar_cliente_contribuinte(self, dados_cliente):
         """
-        ✅ NOVO: Verifica se cliente possui Inscrição Estadual
+        Verifica se cliente possui Inscrição Estadual
         """
         if not dados_cliente:
             print(f"[PEDIDOS] Dados do cliente não fornecidos")
@@ -386,7 +386,7 @@ class PedidosService(SankhyaClient):
                 "TIPMOV": {"$": "P"}  # P = Pedido de venda
             }
 
-            # NOVO: Mapear ID do WooCommerce para campo customizado
+  # Mapear ID do WooCommerce para campo customizado
             if kwargs.get('id_woo'):
                 # Garante que o campo AD_IDWOOCOMMERCE foi criado na tabela TGFCAB
                 cabecalho["AD_IDWOOCOMMERCE"] = {"$": str(kwargs['id_woo'])}
@@ -515,7 +515,7 @@ class PedidosService(SankhyaClient):
 
     def atualizar_frete_sem_recalculo(self, nunota, vlr_frete, codparctransp=None):
         """
-        ✅ CORRIGIDO: Atualiza o frete usando estrutura correta do DatasetSP.save
+        CORRIGIDO: Atualiza o frete usando estrutura correta do DatasetSP.save
         SEM definir ICMS como zero - deixa o Sankhya calcular automaticamente
         """
         try:
@@ -718,7 +718,7 @@ class PedidosService(SankhyaClient):
       
     def calcular_rateio_frete_cubagem(self, line_items, vlr_frete_total):
         """
-        ✅ CORRIGIDO: Vincula dimensões existentes no WooCommerce
+        CORRIGIDO: Vincula dimensões existentes no WooCommerce
         """
         try:
             print(f"[PEDIDOS] Calculando rateio de frete por cubagem...")
@@ -797,7 +797,7 @@ class PedidosService(SankhyaClient):
     
     def _obter_dimensao_item(self, item, dimensao):
         """
-        ✅ NOVO: Extrai dimensão específica de múltiplas fontes
+        Extrai dimensão específica de múltiplas fontes
         """
         # Valor padrão em metros
         padrao = 0.1  # 10cm
@@ -845,7 +845,7 @@ class PedidosService(SankhyaClient):
     
     def _converter_para_metros(self, valor):
         """
-        ✅ NOVO: Converte valor para metros detectando unidade
+        Converte valor para metros detectando unidade
         """
         try:
             val = float(valor) if valor else 0
@@ -1226,7 +1226,7 @@ class PedidosService(SankhyaClient):
                     produto_mapeado = self.produtos_service.mapear_produto(item)
 
                     if produto_mapeado and produto_mapeado.get('produto_encontrado', False):
-                        # Obtém CODLOCALORIG dinâmico
+                        # Obtém CODLOCALORIG dinmico
                         codlocalorig = self.obter_codlocalorig_dinamico(produto_mapeado['codprod_sankhya'])
                         if not codlocalorig:
                             codlocalorig = '401'  # Padrão
@@ -1499,7 +1499,7 @@ class PedidosService(SankhyaClient):
 
     def _mapear_frete_por_estoque_msc(self, raw_woo_payload):
         """
-        NOVO: Mapeia o valor do frete dividido por CODLOCALORIG, 
+        Mapeia o valor do frete dividido por CODLOCALORIG, 
         baseado no meta_data _msc_codlocal_groups e nas shipping_lines.
         Assume correspondência 1:1 entre grupos e linhas de frete (ordem/tamanho).
         """
@@ -1541,7 +1541,7 @@ class PedidosService(SankhyaClient):
     
     def _extract_value(self, field_obj):
         """
-        ✅ CORRIGIDO: Extrai valor do objeto de campo do Sankhya de forma mais robusta
+        CORRIGIDO: Extrai valor do objeto de campo do Sankhya de forma mais robusta
         """
         if not field_obj:
             return ""

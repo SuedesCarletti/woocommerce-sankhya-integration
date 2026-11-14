@@ -58,7 +58,7 @@ def log_request(logger, method, path, ip=None, status=None):
     FUNÇÃO ADICIONAL: Log de requisições HTTP
     """
     if status:
-        emoji = "✅" if status < 400 else "❌"
+        emoji = "" if status < 400 else "❌"
         message = f"{emoji} {method} {path} - Status: {status}"
     else:
         message = f"📥 {method} {path}"
@@ -111,7 +111,7 @@ def log_processing(logger, process_name, status, details=None):
         level = "info"
         message = f"{emoji} Iniciando: {process_name}"
     elif status == "success":
-        emoji = "✅"
+        emoji = ""
         level = "info"
         message = f"{emoji} Sucesso: {process_name}"
     elif status == "warning":
@@ -154,7 +154,7 @@ def log_integration_event(logger, event_type, source_id, target_id=None, error=N
 def log_data_validation(logger, data_type, validation_result, errors=None):
     """
     Log para validação de dados
-    ✅ CORRIGIDO: Suporte a diferentes tipos de errors
+    CORRIGIDO: Suporte a diferentes tipos de errors
     """
     if validation_result == "success" or validation_result is True:
         logger.info(f"Sucesso: {data_type}")
@@ -223,7 +223,7 @@ def debug(message):
 
 def log_webhook_legacy(logger, message, data=None):
     """
-    ✅ FUNÇÃO DE COMPATIBILIDADE: Para código que usa assinatura antiga
+    FUNÇÃO DE COMPATIBILIDADE: Para código que usa assinatura antiga
     """
     if data:
         log_webhook(logger, message, data_id=str(data))

@@ -14,7 +14,7 @@ nfe_bp = Blueprint('nfe', __name__, url_prefix='/nfe')
 @nfe_bp.route('/pdf/view/<int:order_id>', methods=['GET'])
 def view_danfe_pdf(order_id):
     """
-    ✅ VISUALIZAR PDF do DANFE no navegador (inline) - VERSÃO CORRIGIDA
+    VISUALIZAR PDF do DANFE no navegador (inline) - VERSÃO CORRIGIDA
     
     Abre o PDF diretamente no navegador sem forçar download.
     URL: /nfe/pdf/view/{order_id}
@@ -55,7 +55,7 @@ def view_danfe_pdf(order_id):
                 logger.error(f"XML não encontrado para NUNOTA {nunota}")
                 return jsonify({'error': 'XML da NFe não disponível'}), 404
         
-        # 4. Gerar PDF usando BrazilFiscalReport - MÉTODO CORRETO
+        # 4. Gerar PDF usando BrazilFiscalReport
         from brazilfiscalreport.danfe import Danfe
         
         # FIX: Usar arquivo temporário para garantir bytes corretos
@@ -109,7 +109,7 @@ def view_danfe_pdf(order_id):
 @nfe_bp.route('/pdf/download/<int:order_id>', methods=['GET'])
 def download_danfe_pdf(order_id):
     """
-    ✅ DOWNLOAD do PDF do DANFE (força download) - VERSÃO CORRIGIDA
+    DOWNLOAD do PDF do DANFE (força download) - VERSÃO CORRIGIDA
     
     Força o download do PDF ao invés de abrir no navegador.
     URL: /nfe/pdf/download/{order_id}
@@ -150,7 +150,7 @@ def download_danfe_pdf(order_id):
                 logger.error(f"XML não encontrado para NUNOTA {nunota}")
                 return jsonify({'error': 'XML da NFe não disponível'}), 404
         
-        # 4. Gerar PDF - MÉTODO CORRETO
+        # 4. Gerar PDF
         from brazilfiscalreport.danfe import Danfe
         
         # FIX: Usar arquivo temporário
@@ -203,7 +203,7 @@ def download_danfe_pdf(order_id):
 @nfe_bp.route('/check/<int:order_id>', methods=['GET'])
 def check_nfe_status(order_id):
     """
-    ✅ Verifica se NFe está disponível
+    Verifica se NFe está disponível
     
     Retorna JSON com status da NFe.
     URL: /nfe/check/{order_id}

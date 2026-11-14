@@ -4,7 +4,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.7%2B-blue)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-2.2%2B-green)](https://flask.palletsprojects.com)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://railway.app)
 
 ## **Versão Atual: 2.2 (Estável)**
@@ -225,6 +224,8 @@ curl http://localhost:3000/version
   }
 }
 ```
+
+> **Autenticação:** todos os endpoints administrativos, `POST /customers/woocommerce` e `/nfe/*` (exceto `/nfe/health`) exigem o token, em `?token=` ou no header `X-API-Token` (preferível, não aparece na URL).
 
 #### **GET /config?token=SEU_TOKEN** - Configurações Seguras
 ```bash

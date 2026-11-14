@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import hmac
 import os
 import requests
 from dotenv import load_dotenv
@@ -37,6 +38,28 @@ WC_URL = config.get("WC_URL")
 WC_KEY = config.get("WC_KEY") 
 WC_SECRET = config.get("WC_SECRET")
 WEBHOOK_TOKEN = config.get("WEBHOOK_SECRET")
+
+
+def token_valido(token):
+    """Compara o token em tempo constante; recusa se o segredo não estiver configurado."""
+    if not token or not WEBHOOK_TOKEN:
+        return False
+    return hmac.compare_digest(str(token), str(WEBHOOK_TOKEN))
+
+
+def token_da_requisicao():
+    """Aceita ?token= ou o header X-API-Token (o header evita token em log/URL)."""
+    return request.args.get("token") or request.headers.get("X-API-Token")
+
+
+@app.before_request
+def exigir_token_nfe():
+    """DANFE contém dados fiscais do cliente: nada de acesso anônimo por número de pedido."""
+    if not request.path.startswith("/nfe/") or request.path.endswith("/health"):
+        return None
+    if not token_valido(token_da_requisicao()):
+        return jsonify({"erro": "Token inválido"}), 401
+    return None
 
 # SUBSTITUA a função get_orders() no app.py por esta versão corrigida:
 
@@ -111,10 +134,10 @@ def root():
         "status": "online",
         "timestamp": datetime.now().isoformat(),
         "new_features": [
-            "✅ Suporte a transportadoras",
-            "✅ Processamento de AllPost",
-            "✅ TIPMOV = P (Pedido)",
-            "✅ Informações de frete"
+            "Suporte a transportadoras",
+            "Processamento de AllPost",
+            "TIPMOV = P (Pedido)",
+            "Informações de frete"
         ],
         "endpoints": [
             "GET  / - Esta página",
@@ -147,10 +170,13 @@ def root():
 @app.route("/customers/woocommerce", methods=["POST"])
 def sync_customer_woocommerce():
     """
-    🔉 NOVO ENDPOINT: Sincroniza cliente WooCommerce → Sankhya (CORRIGIDO)
+    Endpoint: Sincroniza cliente WooCommerce → Sankhya
     """
+    if not token_valido(token_da_requisicao()):
+        return jsonify({"erro": "Token inválido"}), 401
+
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True) or {}
         customer_data = data.get('customer_data')
         
         if not customer_data:
@@ -263,8 +289,8 @@ def version_info():
 @app.route("/config", methods=["GET"])
 def config_info():
     """Informações de configuração (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
@@ -297,15 +323,15 @@ def config_info():
 @app.route("/woo/orders", methods=["GET"])
 def woo_orders():
     """Lista pedidos do WooCommerce (requer token) - VERSÃO CORRIGIDA"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
         # CORREÇÃO: Usa o WooCommerceService que já tem as correções de URL
         woo_service = WooCommerceService()
         
-        # Parâmetros opcionais
+        # Parmetros opcionais
         params = {
             'per_page': int(request.args.get('per_page', 10)),
             'orderby': 'date',
@@ -352,8 +378,8 @@ def woo_orders():
 @app.route("/sankhya/transportadoras", methods=["GET"])
 def sankhya_transportadoras():
     """Lista transportadoras ativas no Sankhya (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
@@ -393,8 +419,8 @@ def sankhya_transportadoras():
 @app.route("/sankhya/stats", methods=["GET"])
 def sankhya_stats():
     """Estatísticas do sistema Sankhya (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
@@ -420,8 +446,8 @@ def sankhya_stats():
 @app.route("/sankhya/test", methods=["POST"])
 def sankhya_test():
     """Teste de integração Sankhya (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
@@ -503,12 +529,12 @@ def sankhya_test():
 @app.route("/woo/customers", methods=["GET"])
 def woo_customers():
     """Lista clientes do WooCommerce (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
-        # Parâmetros opcionais da URL
+        # Parmetros opcionais da URL
         params = {
             'per_page': int(request.args.get('per_page', 10)),
             'page': int(request.args.get('page', 1)),
@@ -519,7 +545,7 @@ def woo_customers():
             'role': request.args.get('role', 'customer')
         }
         
-        # Remove parâmetros vazios
+        # Remove parmetros vazios
         params = {k: v for k, v in params.items() if v is not None}
         
         logger.info(f"Buscando clientes WooCommerce com filtros: {params}")
@@ -577,8 +603,8 @@ def woo_customers():
 @app.route("/woo/customers/<int:customer_id>", methods=["GET"])
 def woo_customer_detail(customer_id):
     """Busca cliente específico por ID (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:
@@ -646,8 +672,8 @@ def woo_customer_detail(customer_id):
 @app.route("/sync/orders", methods=["POST"])
 def sync_orders():
     """Sincronização manual de pedidos (requer token)"""
-    token = request.args.get("token")
-    if not token or token != WEBHOOK_TOKEN:
+    token = token_da_requisicao()
+    if not token_valido(token):
         return jsonify({"erro": "Token inválido"}), 401
     
     try:

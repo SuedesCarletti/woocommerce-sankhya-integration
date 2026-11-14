@@ -18,7 +18,7 @@ from .service import SankhyaService, SankhyaServiceContext
 __all__ = [
     # Classes principais
     'SankhyaService',
-    'SankhyaServiceContext',  # NOVO: Context manager corrigido
+    'SankhyaServiceContext',  # Context manager corrigido
     
     # Autenticação
     'SankhyaAuth',

@@ -44,7 +44,7 @@ class WooCommerceClientDefensive:
         print(f"[WOO CLIENT] Analisando configurações...")
         for key, value in config_raw.items():
             if value:
-                print(f"[WOO CLIENT]   {key}: {value[:15]}...")
+                print(f"[WOO CLIENT]   {key}: definido")
         
         # DETECÇÃO INTELIGENTE
         url_candidatos = []
@@ -101,8 +101,8 @@ class WooCommerceClientDefensive:
         # RELATÓRIO DA CORREÇÃO
         print(f"[WOO CLIENT] Configuração final:")
         print(f"[WOO CLIENT]   URL: {self.base_url}")
-        print(f"[WOO CLIENT]   Key: {self.consumer_key[:15] if self.consumer_key else 'N/A'}...")
-        print(f"[WOO CLIENT]   Secret: {self.consumer_secret[:15] if self.consumer_secret else 'N/A'}...")
+        print(f"[WOO CLIENT]   Key: {'definido' if self.consumer_key else 'N/A'}")
+        print(f"[WOO CLIENT]   Secret: {'definido' if self.consumer_secret else 'N/A'}")
         
         # GUIA DE CORREÇÃO MANUAL (se necessário)
         if not all([self.base_url, self.consumer_key, self.consumer_secret]):
@@ -241,23 +241,23 @@ class WooCommerceClientDefensive:
     
     def get_orders(self, params=None):
         """
-        Busca pedidos do WooCommerce - MÉTODO ESPECÍFICO
+        Busca pedidos do WooCommerce
         """
         if params is None:
             params = {}
         
-        # Parâmetros padrão
+        # Parmetros padrão
         default_params = {
             'per_page': 10,
             'orderby': 'date',
             'order': 'desc'
         }
         
-        # Mescla parâmetros
+        # Mescla parmetros
         final_params = {**default_params, **params}
         
         try:
-            print(f"[WOO CLIENT] Buscando pedidos com parâmetros: {final_params}")
+            print(f"[WOO CLIENT] Buscando pedidos com parmetros: {final_params}")
             return self.get_request('orders', final_params)
         except Exception as e:
             print(f"[WOO CLIENT] Erro ao buscar pedidos: {e}")
@@ -281,18 +281,18 @@ class WooCommerceClientDefensive:
         if params is None:
             params = {}
         
-        # Parâmetros padrão
+        # Parmetros padrão
         default_params = {
             'per_page': 10,
             'orderby': 'registered_date',
             'order': 'desc'
         }
         
-        # Mescla parâmetros
+        # Mescla parmetros
         final_params = {**default_params, **params}
         
         try:
-            print(f"[WOO CLIENT] Buscando clientes com parâmetros: {final_params}")
+            print(f"[WOO CLIENT] Buscando clientes com parmetros: {final_params}")
             return self.get_request('customers', final_params)
         except Exception as e:
             print(f"[WOO CLIENT] Erro ao buscar clientes: {e}")

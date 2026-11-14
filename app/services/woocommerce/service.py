@@ -1,8 +1,8 @@
 """
 WooCommerceService COMPLETO - Versão 2.5.0
-✅ MANTÉM TODAS as funcionalidades originais
-✅ CORRIGE apenas o problema do context manager
-✅ ADICIONA métodos auxiliares que estavam faltando
+MANTÉM TODAS as funcionalidades originais
+CORRIGE apenas o problema do context manager
+ADICIONA métodos auxiliares que estavam faltando
 """
 
 import re
@@ -14,8 +14,8 @@ import json
 class WooCommerceService:
     """
     Serviço COMPLETO para processamento de webhooks e operações WooCommerce
-    ✅ MANTÉM todas as funcionalidades originais
-    ✅ CORRIGE apenas o uso do context manager
+    MANTÉM todas as funcionalidades originais
+    CORRIGE apenas o uso do context manager
     """
     
     def __init__(self):
@@ -43,7 +43,7 @@ class WooCommerceService:
     def processar_webhook(self, headers, data):
         """
         Processa webhooks usando context manager
-        ✅ MANTÉM toda a lógica original, CORRIGE apenas a autenticação
+        MANTÉM toda a lógica original, CORRIGE apenas a autenticação
         """
         try:
             # Extrair informações do webhook
@@ -100,13 +100,7 @@ class WooCommerceService:
                     "evento": evento_normalizado
                 }
             
-            # Log do resultado
-            if resultado.get('status') == 'success':
-                print(f"[WOO SERVICE] Webhook {evento_normalizado} processado com sucesso")
-            else:
-                print(f"[WOO SERVICE] Erro no processamento: {resultado.get('message', 'Erro desconhecido')}")
-            
-            return resultado
+            # Todos os ramos do `with` acima já retornam; este ponto não é alcançável.
                 
         except Exception as e:
             print(f"[WOO SERVICE] Erro geral no processamento: {e}")
@@ -161,7 +155,7 @@ class WooCommerceService:
     
     def _processar_pedido_atualizado(self, sankhya, data, headers):
         """
-        ✅ CORRIGIDO: Processa order.updated como PEDIDO (mantém consulta de parceiro)
+        CORRIGIDO: Processa order.updated como PEDIDO (mantém consulta de parceiro)
         """
         try:
             pedido_id = data.get('id')
@@ -209,7 +203,7 @@ class WooCommerceService:
     
     def _processar_pedido_criado(self, sankhya, data, headers):
         """
-        ✅ MANTIDO: Este método já funciona corretamente
+        MANTIDO: Este método já funciona corretamente
         (consulta parceiro e retorna CODPARC como visto nos logs)
         """
         try:
@@ -531,7 +525,7 @@ class WooCommerceService:
     def buscar_pedidos(self, status=None, limit=10):
         """
         Busca pedidos do WooCommerce
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA
+        FUNCIONALIDADE ORIGINAL MANTIDA
         """
         try:
             print(f"[WOO SERVICE] Buscando pedidos - Status: {status}, Limite: {limit}")
@@ -571,7 +565,7 @@ class WooCommerceService:
     def buscar_clientes(self, limit=10):
         """
         Busca clientes do WooCommerce
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA
+        FUNCIONALIDADE ORIGINAL MANTIDA
         """
         try:
             print(f"[WOO SERVICE] Buscando clientes - Limite: {limit}")
@@ -613,7 +607,7 @@ class WooCommerceService:
     def processar_pedido_manual(self, pedido_id):
         """
         Processa um pedido específico manualmente
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA
+        FUNCIONALIDADE ORIGINAL MANTIDA
         """
         try:
             print(f"[WOO SERVICE] Processamento manual do pedido {pedido_id}")
@@ -658,7 +652,7 @@ class WooCommerceService:
     def verificar_conectividade(self):
         """
         Verifica se a conexão com WooCommerce está funcionando
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA
+        FUNCIONALIDADE ORIGINAL MANTIDA
         """
         try:
             if not self.client:
@@ -694,7 +688,7 @@ class WooCommerceService:
     def obter_estatisticas(self):
         """
         Obtém estatísticas do WooCommerce
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA + MELHORADA
+        FUNCIONALIDADE ORIGINAL MANTIDA + MELHORADA
         """
         try:
             print(f"[WOO SERVICE] Obtendo estatísticas...")
@@ -742,7 +736,7 @@ class WooCommerceService:
     def validar_webhook(self, headers, data):
         """
         Valida se o webhook pode ser processado
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA + MELHORADA
+        FUNCIONALIDADE ORIGINAL MANTIDA + MELHORADA
         """
         try:
             # Validações básicas
@@ -786,7 +780,7 @@ class WooCommerceService:
     def teste_conexao_sankhya(self):
         """
         Testa a conexão com o Sankhya usando context manager
-        ✅ FUNCIONALIDADE ORIGINAL MANTIDA + MELHORADA
+        FUNCIONALIDADE ORIGINAL MANTIDA + MELHORADA
         """
         try:
             with SankhyaService.with_auth() as sankhya:
@@ -810,7 +804,7 @@ class WooCommerceService:
     def processar_webhook_batch(self, webhooks_list):
         """
         Processa múltiplos webhooks em lote
-        ✅ FUNCIONALIDADE ADICIONAL ÚTIL
+        FUNCIONALIDADE ADICIONAL ÚTIL
         """
         try:
             print(f"[WOO SERVICE] Processando lote de {len(webhooks_list)} webhooks...")
@@ -853,7 +847,7 @@ class WooCommerceService:
     def diagnosticar_integracao(self):
         """
         Diagnóstica todo o sistema de integração
-        ✅ FUNCIONALIDADE ADICIONAL ÚTIL
+        FUNCIONALIDADE ADICIONAL ÚTIL
         """
         try:
             print(f"[WOO SERVICE] Iniciando diagnóstico completo...")
@@ -928,7 +922,7 @@ class WooCommerceService:
             diagnostico['status_geral'] = 'ok' if todos_ok else 'problemas_encontrados'
             
             if todos_ok:
-                diagnostico['recomendacoes'].append('✅ Sistema totalmente funcional!')
+                diagnostico['recomendacoes'].append('Sistema totalmente funcional!')
             
             print(f"[WOO SERVICE] Diagnóstico concluído: {diagnostico['status_geral']}")
             

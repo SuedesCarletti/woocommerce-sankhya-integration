@@ -10,7 +10,7 @@ from .cidades import CidadesService
 class ParceirosService(SankhyaClient):
     """
     Serviço para gestão de parceiros/clientes no Sankhya
-    ✅ UNIFICADO: Incorpora todas as funcionalidades e correções.
+    UNIFICADO: Incorpora todas as funcionalidades e correções.
     """
     
     def __init__(self, token=None):
@@ -21,7 +21,7 @@ class ParceirosService(SankhyaClient):
     def consultar_por_documento(self, documento):
         """
         Consulta parceiro por documento (CPF/CNPJ).
-        ✅ CORREÇÃO: Adiciona offsetPage obrigatório e ajusta estrutura de parâmetros.
+        CORREÇÃO: Adiciona offsetPage obrigatório e ajusta estrutura de parâmetros.
         """
         if not documento or not documento.strip():
             print("[PARCEIROS] Documento vazio ou inválido.")
@@ -860,7 +860,7 @@ class ParceirosService(SankhyaClient):
         soma = 0
         pos = tamanho - 7
         for i in range(tamanho):
-            soma += int(cnpj[i]) * pesos_cnpj[pos]
+            soma += int(cnpj[i]) * pos
             pos -= 1
             if pos < 2:
                 pos = 9
@@ -873,7 +873,7 @@ class ParceirosService(SankhyaClient):
         soma = 0
         pos = tamanho - 7
         for i in range(tamanho):
-            soma += int(cnpj[i]) * pesos_cnpj[pos]
+            soma += int(cnpj[i]) * pos
             pos -= 1
             if pos < 2:
                 pos = 9
@@ -892,7 +892,7 @@ class ParceirosService(SankhyaClient):
     def _extract_value(self, field_obj):
         """
         Extrai o valor de um objeto de campo retornado pelo Sankhya de forma robusta.
-        ✅ CORRIGIDO: Trata None, dicionários com '$' e outros tipos.
+        CORRIGIDO: Trata None, dicionários com '$' e outros tipos.
         """
         if not field_obj:
             return ""

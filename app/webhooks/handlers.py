@@ -194,7 +194,11 @@ def webhook_health():
 
 @webhook_bp.route('/test', methods=['POST'])
 def webhook_test():
-    """Endpoint para testar webhooks manualmente"""
+    """Endpoint para testar webhooks manualmente (requer token: processa dados de verdade)"""
+    token = request.args.get("token") or request.headers.get("X-API-Token")
+    if not security.validar_token(token):
+        return jsonify({"erro": "Token inválido"}), 401
+
     try:
         # Simula headers de teste
         headers = {
@@ -238,7 +242,11 @@ def webhook_test():
 
 @webhook_bp.route('/stats', methods=['GET'])
 def webhook_stats():
-    """Estatísticas dos webhooks"""
+    """Estatísticas dos webhooks (requer token)"""
+    token = request.args.get("token") or request.headers.get("X-API-Token")
+    if not security.validar_token(token):
+        return jsonify({"erro": "Token inválido"}), 401
+
     try:
         stats = woo_service.obter_estatisticas()
         return jsonify(stats), 200

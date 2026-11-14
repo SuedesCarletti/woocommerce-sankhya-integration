@@ -2,7 +2,7 @@ from .base import SankhyaClient
 
 class TransportadorasService(SankhyaClient):
     """
-    NOVO SERVIÇO: Gestão de transportadoras no Sankhya
+    Serviço: Gestão de transportadoras no Sankhya
     Consulta transportadoras por ID AllPost do WooCommerce
     """
     

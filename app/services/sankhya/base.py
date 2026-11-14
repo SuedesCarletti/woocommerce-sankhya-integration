@@ -116,7 +116,7 @@ class SankhyaClient:
     
     def load_records(self, entity, fields=None, criteria=None, limit=None, offset_page=None):
         """
-        ✅ CORRIGIDO: Adiciona suporte ao offsetPage obrigatório
+        CORRIGIDO: Adiciona suporte ao offsetPage obrigatório
         """
         payload = {
             "serviceName": "CRUDServiceProvider.loadRecords",
